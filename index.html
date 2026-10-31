@@ -7,12 +7,74 @@
 <title>Bright Mechanical | HVAC &amp; Mechanical Services</title>
 <style>
 :root{color-scheme:dark;--bg:#1c1c1e;--silver:#c8ccd0;--white:#f2f3f4;--border:#474b4e}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--silver);font-family:Arial,Helvetica,sans-serif;line-height:1.65}a{color:inherit}header{position:sticky;top:0;z-index:10;background:#000;border-bottom:1px solid #373a3d;padding:4px 24px 8px;display:flex;justify-content:center;align-items:flex-start}header .brand{display:flex;flex-direction:column;align-items:center}header .brand-logo{display:block}header img{width:150px;height:150px;object-fit:contain;display:block}header .brand-phone{color:#c8ccd0;font-size:.78rem;font-weight:400;line-height:1.2;letter-spacing:.02em;text-decoration:none;white-space:nowrap}header .brand-phone:hover,header .brand-phone:focus{text-decoration:underline}.hero{min-height:590px;display:flex;align-items:center;background:linear-gradient(90deg,rgba(18,19,20,.94) 0%,rgba(18,19,20,.78) 50%,rgba(18,19,20,.35) 100%),url('IMG-3558.jpeg') center 48% / cover no-repeat}.wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}.hero-copy{max-width:730px;padding:88px 0}.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:.78rem;font-weight:700;color:#d5d9dc;margin:0 0 17px}h1,h2,h3,p{margin-top:0}h1,h2{color:var(--white);line-height:1.1;letter-spacing:-.035em}h1{font-size:clamp(3.3rem,7vw,6.5rem);margin-bottom:14px}h2{font-size:clamp(2.2rem,4.5vw,3.5rem);margin-bottom:26px}.tagline{font-size:clamp(1.2rem,2.5vw,1.65rem);font-weight:600;color:var(--silver);margin-bottom:28px}.intro{font-size:1.08rem;max-width:680px;color:#e1e3e5;margin-bottom:32px}.button{display:inline-block;background:#d8dce0;color:#18191a;padding:15px 23px;text-decoration:none;font-weight:800;border:1px solid #d8dce0;border-radius:3px;letter-spacing:.02em}.button:hover,.button:focus{background:#fff}.area{font-size:.88rem;color:#d5d8db;margin:22px 0 0}.section{padding:92px 0}.section-head{max-width:720px}.services{background:#222426}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;list-style:none;padding:0;margin:36px 0 0}.grid li{border:1px solid var(--border);padding:25px;min-height:112px;display:flex;align-items:center;color:var(--white);font-size:1.12rem;font-weight:700}.about-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:64px}.about-layout p{font-size:1.12rem}.contact{background:#292b2d;border-top:1px solid var(--border)}.contact-layout{display:flex;justify-content:space-between;gap:40px;align-items:flex-start}.contact-list p{margin:0 0 10px}.contact-list a{text-underline-offset:4px}.footer{padding:26px 0;border-top:1px solid var(--border);font-size:.85rem;color:#a5aaae}@media(max-width:700px){header{padding:3px 16px 7px}header img{width:122px;height:122px}header .brand-phone{font-size:.73rem}.hero{min-height:570px;background-position:60% center}.hero-copy{padding:70px 0}.wrap{width:calc(100% - 36px)}html{scroll-padding-top:var(--header-height,150px)}.section,h2{scroll-margin-top:12px}.section{padding:65px 0}.grid{grid-template-columns:1fr}.grid li{min-height:auto;padding:20px}.about-layout{grid-template-columns:1fr;gap:5px}.contact-layout{display:block}.contact-layout .button{margin-top:20px}}
-@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()) and (timeline-scope:--about-reveal){main{timeline-scope:--about-reveal}#services{position:sticky;top:min(var(--fold-header,0px),calc(100svh - var(--fold-height,100svh)));z-index:2;transform-origin:center top;animation:services-fold 1s linear both;animation-timeline:--about-reveal;animation-range:entry 50% entry 100%}#about{position:relative;z-index:1;background:var(--bg);view-timeline-name:--about-reveal;view-timeline-axis:block}#contact{position:relative;z-index:3}@keyframes services-fold{from{transform:perspective(1200px) rotateX(0deg);opacity:1}to{transform:perspective(1200px) rotateX(-80deg);opacity:0}}}}@media (max-width:700px){#services{position:static;top:auto;z-index:auto;transform:none;animation:none}#about{position:static;z-index:auto;view-timeline-name:none}#contact{position:static;z-index:auto}}@media (min-width:701px) and (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()) and (timeline-scope:--about-reveal){main{timeline-scope:--about-reveal,--services-reveal}.hero{position:sticky;top:min(var(--hero-header,0px),calc(100svh - var(--hero-height,100svh)));z-index:3;transform-origin:center top;animation:services-fold 1s linear both;animation-timeline:--services-reveal;animation-range:entry 50% entry 100%}#services{view-timeline-name:--services-reveal;view-timeline-axis:block}}}</style><script>document.addEventListener('DOMContentLoaded',()=>{const hero=document.querySelector('.hero'),header=document.querySelector('header');if(!hero||!header)return;const size=()=>{hero.style.setProperty('--hero-height',hero.offsetHeight+'px');hero.style.setProperty('--hero-header',header.offsetHeight+'px');document.documentElement.style.setProperty('--header-height',header.offsetHeight+'px')};size();window.addEventListener('resize',size);if('ResizeObserver' in window){const observer=new ResizeObserver(size);observer.observe(hero);observer.observe(header)}});</script><script>document.addEventListener('DOMContentLoaded',()=>{const s=document.getElementById('services'),h=document.querySelector('header');if(!s||!h)return;const size=()=>{s.style.setProperty('--fold-height',s.offsetHeight+'px');s.style.setProperty('--fold-header',h.offsetHeight+'px')};size();window.addEventListener('resize',size);if('ResizeObserver' in window){const r=new ResizeObserver(size);r.observe(s);r.observe(h)}});</script>
+/* The static layout is the safe default if JavaScript or motion is unavailable. */
+main.fold-ready > .hero,main.fold-ready > #services{position:sticky;top:var(--fold-top);transform-origin:center top}
+main.fold-ready > .hero{z-index:3}
+main.fold-ready > #services{z-index:2}
+main > #about{position:relative;z-index:1;background:var(--bg)}
+main > #contact{position:relative;z-index:4}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const main = document.querySelector('main'), header = document.querySelector('header');
+  const hero = document.querySelector('.hero'), services = document.getElementById('services'), about = document.getElementById('about');
+  if (!main || !header || !hero || !services || !about) return;
+  const motion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const sections = [hero, services, about];
+  const anchors = sections.map(function (section) {
+    const anchor = document.createElement('div');
+    anchor.setAttribute('aria-hidden', 'true');
+    section.parentNode.insertBefore(anchor, section);
+    return anchor;
+  });
+  const headings = [hero.querySelector('h1'), services.querySelector('.section-head')];
+  let pending = false;
+  const clamp = value => Math.max(0, Math.min(1, value));
+  function update() {
+    pending = false;
+    document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    if (!motion.matches) {
+      main.classList.remove('fold-ready');
+      [hero, services].forEach(function (section) { section.style.transform = ''; section.style.opacity = ''; section.style.pointerEvents = ''; section.style.removeProperty('--fold-top'); });
+      headings.forEach(function (heading) { if (heading) heading.style.opacity = ''; });
+      return;
+    }
+    main.classList.add('fold-ready');
+    const headerBottom = header.getBoundingClientRect().bottom;
+    const clearance = header.offsetHeight + 12;
+    const viewport = window.innerHeight;
+    const scroll = window.scrollY || window.pageYOffset;
+    const positions = anchors.map(anchor => anchor.getBoundingClientRect().top + scroll);
+    [hero, services].forEach(function (section, index) {
+      // A tall section scrolls until its bottom fits before it begins to stick.
+      const stickyTop = Math.min(clearance, viewport - section.offsetHeight);
+      section.style.setProperty('--fold-top', stickyTop + 'px');
+      const start = Math.max(positions[index] - stickyTop, positions[index + 1] - viewport + 64);
+      const end = positions[index + 1] - clearance;
+      const progress = clamp((scroll - start) / Math.max(1, end - start));
+      section.style.transform = 'perspective(1200px) rotateX(' + (-70 * progress) + 'deg)';
+      section.style.opacity = 1 - clamp((progress - .75) / .25);
+      section.style.pointerEvents = progress >= .98 ? 'none' : '';
+    });
+    // Fade headings before they meet the sticky header, including on short screens.
+    headings.forEach(function (heading) {
+      if (heading) heading.style.opacity = clamp((heading.getBoundingClientRect().top - headerBottom - 12) / 48);
+    });
+  }
+  function schedule() { if (!pending) { pending = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', schedule, {passive: true});
+  window.addEventListener('resize', schedule);
+  if (motion.addEventListener) motion.addEventListener('change', schedule); else motion.addListener(schedule);
+  if ('ResizeObserver' in window) { const observer = new ResizeObserver(schedule); [header, hero, services, about].forEach(item => observer.observe(item)); }
+  schedule();
+});
+</script>
 </head>
 <body>
 <header><div class="brand"><a class="brand-logo" href="#top" aria-label="Bright Mechanical home"><img src="Re-layout-the-attached-up.jpeg" alt="Bright Mechanical BM logo"></a><a class="brand-phone" href="tel:+17432011231">(743) 201-1231</a></div></header>
 <main id="top">
-<section class="hero"><div class="wrap"><div class="hero-copy"><p class="eyebrow">Kernersville &bull; Winston-Salem &bull; Greensboro</p><h1>Bright Mechanical</h1><p class="tagline">HVAC &amp; Mechanical Services</p><p class="intro">Bright Mechanical is a locally owned HVAC and mechanical services business. Owner-operated by Ryan Brightbill, a working HVAC pipefitter, we handle the jobs bigger companies won't return a call.</p><a class="button" href="tel:+17432011231">Call (743) 201-1231</a></div></div></section><script>(()=>{const s=document.createElement('style');s.textContent=`.hero{background-image:linear-gradient(90deg,rgba(18,19,20,.94),rgba(18,19,20,.78) 50%,rgba(18,19,20,.35) 100%),url('IMG-3558.jpeg?v=mobile-fold-1')}@media(max-width:700px) and (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()) and (timeline-scope:--about-reveal){main{timeline-scope:--services-reveal,--about-reveal}.hero{position:relative;z-index:1;transform-origin:center bottom;animation:mobile-fold 1s linear both;animation-timeline:--services-reveal;animation-range:entry 0% entry 35%}#services{position:relative;z-index:2;transform-origin:center bottom;view-timeline-name:--services-reveal;view-timeline-axis:block;animation:mobile-fold 1s linear both;animation-timeline:--about-reveal;animation-range:entry 0% entry 35%}#about{position:relative;z-index:3;background:var(--bg);view-timeline-name:--about-reveal;view-timeline-axis:block}.contact{position:relative;z-index:4}@keyframes mobile-fold{from{transform:perspective(1200px) rotateX(0deg)}to{transform:perspective(1200px) rotateX(-5deg)}}}}`;document.head.appendChild(s);const logo=document.querySelector('header .brand-logo img');if(logo)logo.src='Re-layout-the-attached-up.jpeg?v=mobile-fold-1';if(!(CSS.supports('animation-timeline:view()')&&CSS.supports('timeline-scope:--about-reveal'))){document.addEventListener('DOMContentLoaded',()=>{const header=document.querySelector('header'),hero=document.querySelector('.hero'),services=document.getElementById('services'),about=document.getElementById('about'),motion=matchMedia('(max-width:700px) and (prefers-reduced-motion:no-preference)');let ticking=false;function update(){ticking=false;if(!motion.matches){hero.style.transform='';services.style.transform='';return}const fold=(el,next)=>{const p=Math.max(0,Math.min(1,(header.offsetHeight+180-next.getBoundingClientRect().top)/180));el.style.transformOrigin='center bottom';el.style.transform='perspective(1200px) rotateX('+(-5*p)+'deg)'};fold(services,about);fold(hero,services)}function schedule(){if(!ticking){ticking=true;requestAnimationFrame(update)}}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);if(motion.addEventListener)motion.addEventListener('change',schedule);else motion.addListener(schedule);schedule()})}})()</script>
+<section class="hero"><div class="wrap"><div class="hero-copy"><p class="eyebrow">Kernersville &bull; Winston-Salem &bull; Greensboro</p><h1>Bright Mechanical</h1><p class="tagline">HVAC &amp; Mechanical Services</p><p class="intro">Bright Mechanical is a locally owned HVAC and mechanical services business. Owner-operated by Ryan Brightbill, a working HVAC pipefitter, we handle the jobs bigger companies won't return a call.</p><a class="button" href="tel:+17432011231">Call (743) 201-1231</a></div></div></section>
 <section class="section services" id="services"><div class="wrap"><div class="section-head"><p class="eyebrow">What we do</p><h2>Services</h2></div><ul class="grid"><li>HVAC installation and repair</li><li>Mini-split installs</li><li>Insulation and ductwork</li><li>Basic plumbing repairs</li><li>General repair and odd jobs</li></ul></div></section>
 <!-- About copy can be replaced here when Ryan provides new text. -->
 <section class="section" id="about"><div class="wrap about-layout"><div><h2>About</h2></div><div><p>Bright Mechanical installs and services HVAC and mechanical systems, from full changeouts and new builds to mini-splits, mechanical piping, ductwork and insulation. The job gets done right the first time: the equipment gets sized for the space it's actually going into, the piping goes in clean and straight, and the system runs the way it should when we walk out the door. No shortcuts, no callbacks, and no leaving you with a problem you have to chase somebody down about. Whatever the job is, big or small, it gets treated like it matters and it gets finished. When you call, you get someone who knows the work and tells you straight what it needs. Do it right and it lasts. That's the whole idea.</p></div></div></section>
