@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   const headings = [hero.querySelector('h1'), services.querySelector('.section-head'), about.querySelector('h2'), document.querySelector('#contact .eyebrow'), document.querySelector('#contact h2')];
   let pending = false;
-  const clamp = value => Math.max(0, Math.min(1, value));
+  const clamp = value => Math.max(0, Math.min(1, value)); const ease = value => value * value * (3 - 2 * value); const mobile = window.matchMedia('(max-width: 700px)');
   function update() {
     pending = false;
     document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const start = Math.max(positions[index] - stickyTop, positions[index + 1] - viewport + 64);
       const end = positions[index + 1] - clearance;
       const progress = clamp((scroll - start) / Math.max(1, end - start));
-      section.style.transform = 'perspective(1200px) rotateX(' + (-(window.matchMedia('(max-width: 700px)').matches ? 60 : 70) * progress) + 'deg)';
-      section.style.opacity = 1 - clamp((progress - .75) / .25);
+      section.style.transform = 'perspective(1200px) rotateX(' + (-(mobile.matches ? 55 * ease(progress) : 70 * progress)) + 'deg)';
+      const fade = clamp((progress - .75) / .25); section.style.opacity = 1 - (mobile.matches ? ease(fade) : fade);
       section.style.pointerEvents = progress >= .98 ? 'none' : '';
     });
     // Fade headings before they meet the sticky header, including on short screens.
     headings.forEach(function (heading) {
-      if (heading) { const rect = heading.getBoundingClientRect(); heading.style.opacity = Math.min(clamp((rect.top - headerBottom - 12) / 48), clamp((viewport - rect.bottom) / 36)); }
+      if (heading) { const rect = heading.getBoundingClientRect(); const alpha = Math.min(clamp((rect.top - headerBottom - 12) / 48), clamp((viewport - rect.bottom) / 36)); heading.style.opacity = mobile.matches ? ease(alpha) : alpha; }
     });
   }
   function schedule() { if (!pending) { pending = true; requestAnimationFrame(update); } }
