@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const start = Math.max(positions[index] - stickyTop, positions[index + 1] - viewport + 64);
       const end = positions[index + 1] - clearance;
       const progress = clamp((scroll - start) / Math.max(1, end - start));
-      section.style.transform = 'perspective(1200px) rotateX(' + (-70 * progress) + 'deg)';
+      section.style.transform = 'perspective(1200px) rotateX(' + (-(window.matchMedia('(max-width: 700px)').matches ? 60 : 70) * progress) + 'deg)';
       section.style.opacity = 1 - clamp((progress - .75) / .25);
       section.style.pointerEvents = progress >= .98 ? 'none' : '';
     });
