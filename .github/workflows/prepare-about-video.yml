@@ -10,15 +10,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
-      - name: Encode mobile video and poster
+      - name: Encode mobile video and poster without metadata
         run: |
-          ffmpeg -y -i IMG-3541.mov -t 20 -map 0:v:0 -vf "scale=480:-2,fps=24" -an -c:v libx264 -preset slow -crf 31 -pix_fmt yuv420p -movflags +faststart about-background.mp4
-          ffmpeg -y -i IMG-3541.mov -frames:v 1 -vf "scale=480:-2" -q:v 6 about-poster.jpg
+          ffmpeg -loglevel error -y -i IMG-3541.mov -t 20 -map 0:v:0 -map_metadata -1 -vf "scale=480:-2,fps=24" -an -c:v libx264 -preset slow -crf 31 -pix_fmt yuv420p -movflags +faststart about-background.mp4
+          ffmpeg -loglevel error -y -i IMG-3541.mov -map_metadata -1 -frames:v 1 -vf "scale=480:-2" -q:v 6 about-poster.jpg
           ls -lh about-background.mp4 about-poster.jpg
-      - name: Commit optimized assets
+      - name: Commit optimized assets and remove source
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm IMG-3541.mov
           git add about-background.mp4 about-poster.jpg
-          git commit -m 'Optimize About background assets'
+          git commit -m 'Strip video metadata and remove original source'
           git push origin HEAD:main
