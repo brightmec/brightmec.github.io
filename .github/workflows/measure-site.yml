@@ -1,0 +1,35 @@
+name: Measure live site
+on: workflow_dispatch
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install playwright && npx playwright install --with-deps chromium && pip install pillow
+      - name: Measure 375px viewport
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const b=await chromium.launch({headless:true,args:['--no-sandbox']});
+            const p=await b.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
+            await p.goto('https://brightmec.com/',{waitUntil:'networkidle'});
+            await p.screenshot({path:'/tmp/live.png'});
+            console.log('RECTS',JSON.stringify(await p.evaluate(()=>Object.fromEntries(['header','header img','header .brand-phone','.hero','.hero .eyebrow','#about'].map(s=>{let e=document.querySelector(s),r=e.getBoundingClientRect();return [s,{x:r.x,y:r.y,width:r.width,height:r.height}]})))));
+            console.log('PHONES',JSON.stringify(await p.locator('header .brand-phone').evaluateAll(es=>es.map(e=>{let r=e.getBoundingClientRect();return {text:e.textContent,y:r.y,height:r.height}}))));
+            await b.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          python - <<'PY'
+          from PIL import Image
+          im=Image.open('/tmp/live.png').convert('RGB')
+          active=[]
+          for y in range(0,300):
+            n=sum(1 for x in range(30,345) if max(im.getpixel((x,y)))-min(im.getpixel((x,y)))<40 and max(im.getpixel((x,y)))>65)
+            if n>=3: active.append(y)
+          groups=[]
+          for y in active:
+            if not groups or y>groups[-1][-1]+1: groups.append([y])
+            else: groups[-1].append(y)
+          print('VISIBLE_ROW_GROUPS', [(g[0],g[-1]) for g in groups])
+          PY
