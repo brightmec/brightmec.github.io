@@ -1,28 +1,47 @@
 name: Measure live site
 on: workflow_dispatch
+permissions:
+  contents: write
 jobs:
   measure:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: npm install playwright && npx playwright install --with-deps chromium
-      - name: Measure candidate and live at 375px
+      - name: Test 375px candidate
         run: |
           python3 -m http.server 8000 >/tmp/site.log 2>&1 &
+          mkdir -p .mobile-test
           node <<'JS'
           const {chromium}=require('playwright');
           (async()=>{
             const b=await chromium.launch({headless:true,args:['--no-sandbox']});
-            for(const [name,url] of [['CANDIDATE','http://127.0.0.1:8000/'],['LIVE','https://brightmec.com/?verify=mobile-pass']]) {
-              const p=await b.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
-              await p.goto(url,{waitUntil:'networkidle'});
-              console.log(name,'INITIAL',JSON.stringify(await p.evaluate(()=>({viewport:[innerWidth,innerHeight],cardText:document.querySelector('#services li:last-child').textContent,video:document.querySelector('#about video source').getAttribute('src'),mask:getComputedStyle(document.querySelector('#services')).maskImage,servicePadding:getComputedStyle(document.querySelector('#services')).paddingBottom,spacer:document.querySelector('#about').previousElementSibling.offsetHeight,headingOpacity:getComputedStyle(document.querySelector('#services .section-head')).opacity,aboutPadding:getComputedStyle(document.querySelector('#about')).paddingTop}))));
-              for(let y=0;y<4500;y+=50) {
-                const r=await p.evaluate(async y=>{document.documentElement.style.scrollBehavior='auto';scrollTo(0,y);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const q=s=>document.querySelector(s),s=q('#services'),h=q('#services .section-head'),c=q('#services li:last-child'),a=q('#about'),head=q('header');const rect=e=>{const r=e.getBoundingClientRect();return [Math.round(r.top*100)/100,Math.round(r.bottom*100)/100]};let hr=h.getBoundingClientRect(),cr=c.getBoundingClientRect(),ar=a.getBoundingClientRect();let x=Math.min(innerWidth-2,Math.max(2,hr.left+10)),hy=Math.min(innerHeight-1,Math.max(0,(hr.top+hr.bottom)/2)),hit=document.elementFromPoint(x,hy);return {scroll:scrollY,header:rect(head),heading:rect(h),headOpacity:getComputedStyle(h).opacity,serviceOpacity:getComputedStyle(s).opacity,transform:getComputedStyle(s).transform,card:rect(c),about:rect(a),uncovered:!!hit&&h.contains(hit),gap:Math.round((ar.top-cr.bottom)*100)/100}},y);
-                if((r.heading[1]>100&&r.heading[0]<812)||(r.card[1]>100&&r.card[0]<812)||(r.about[0]>100&&r.about[0]<812)) console.log(name,'SAMPLE',JSON.stringify(r));
-              }
-              await p.close();
+            const p=await b.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
+            await p.goto('http://127.0.0.1:8000/',{waitUntil:'networkidle'});
+            let lowest=1, n=0;
+            for(let y=0;y<=2200;y+=25){
+              const r=await p.evaluate(async y=>{
+                document.documentElement.style.scrollBehavior='auto';scrollTo(0,y);
+                await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+                const s=document.querySelector('#services'), h=s.querySelector('.section-head'), a=document.querySelector('#about'), c=s.querySelector('li:last-child');
+                const rect=e=>{let r=e.getBoundingClientRect();return [r.top,r.bottom]};
+                const eff=e=>{let v=1;for(;e;e=e.parentElement)v*=Number(getComputedStyle(e).opacity);return v};
+                let hrect=h.getBoundingClientRect(), head=document.querySelector('header').getBoundingClientRect(), x=Math.min(innerWidth-2,Math.max(2,hrect.left+10)), yy=Math.min(innerHeight-1,Math.max(0,(hrect.top+hrect.bottom)/2)),hit=document.elementFromPoint(x,yy);
+                return {scroll:scrollY,heading:rect(h),header:rect(document.querySelector('header')),effectiveEyebrow:eff(h.querySelector('.eyebrow')),effectiveH2:eff(h.querySelector('h2')),sectionOpacity:getComputedStyle(s).opacity,gridOpacity:getComputedStyle(s.querySelector('.grid')).opacity,mask:getComputedStyle(s).maskImage,transform:getComputedStyle(s).transform,uncovered:!!hit&&h.contains(hit),card:rect(c),about:rect(a),gap:a.getBoundingClientRect().top-c.getBoundingClientRect().bottom,video:a.querySelector('video source').getAttribute('src')};
+              },y);
+              if(r.heading[0]>=r.header[1]&&r.heading[1]<=812&&r.uncovered){lowest=Math.min(lowest,r.effectiveEyebrow,r.effectiveH2);n++;if(r.effectiveEyebrow!==1||r.effectiveH2!==1)throw Error('Heading opacity below 1: '+JSON.stringify(r));}
+              if([1150,1500,1650,1750,1850].includes(y)){console.log('SAMPLE',JSON.stringify(r));await p.screenshot({path:'.mobile-test/scroll-'+y+'.png'});}
+              if(y===1150 && (r.gap<50||r.gap>160))throw Error('Unexpected gap: '+r.gap);
             }
+            if(!n)throw Error('No visible headings sampled');
+            console.log('PASS visible samples:',n,'minimum effective opacity:',lowest,'viewport: 375x812');
             await b.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
+      - name: Save screenshots to test branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .mobile-test
+          git commit -m 'Save temporary mobile fold test screenshots' || true
+          git push origin HEAD:test-mobile-services-spacing
