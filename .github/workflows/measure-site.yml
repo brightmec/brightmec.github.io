@@ -5,31 +5,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm install playwright && npx playwright install --with-deps chromium && pip install pillow
-      - name: Measure 375px viewport
+      - run: npm install playwright && npx playwright install --with-deps chromium
+      - name: Measure candidate and live at 375px
         run: |
+          python3 -m http.server 8000 >/tmp/site.log 2>&1 &
           node <<'JS'
           const {chromium}=require('playwright');
           (async()=>{
             const b=await chromium.launch({headless:true,args:['--no-sandbox']});
-            const p=await b.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
-            await p.goto('https://brightmec.com/',{waitUntil:'networkidle'});
-            await p.screenshot({path:'/tmp/live.png'});
-            console.log('RECTS',JSON.stringify(await p.evaluate(()=>Object.fromEntries(['header','header img','header .brand-phone','.hero','.hero .eyebrow','#about'].map(s=>{let e=document.querySelector(s),r=e.getBoundingClientRect();return [s,{x:r.x,y:r.y,width:r.width,height:r.height}]})))));
-            console.log('PHONES',JSON.stringify(await p.locator('header .brand-phone').evaluateAll(es=>es.map(e=>{let r=e.getBoundingClientRect();return {text:e.textContent,y:r.y,height:r.height}}))));
-            const photo='https://brightmec.com/4a62a846-54c8-4f30-adc3-74c794758d0d.jpeg'; const r=await p.request.get(photo); console.log('PHOTO_HTTP',r.status(),r.headers()['content-type']); console.log('HOME',JSON.stringify(await p.evaluate(async()=>{const q=s=>document.querySelector(s),read=e=>{let s=getComputedStyle(e),r=e.getBoundingClientRect();return {text:e.textContent,href:e.getAttribute('href'),rect:[r.x,r.y,r.width,r.height],font:s.fontFamily,fontSize:s.fontSize,weight:s.fontWeight,color:s.color,background:s.backgroundColor,image:s.backgroundImage,size:s.backgroundSize,position:s.backgroundPosition,opacity:s.opacity,padding:s.padding,radius:s.borderRadius}};let im=new Image();im.src='/4a62a846-54c8-4f30-adc3-74c794758d0d.jpeg';await im.decode().catch(()=>{});return {viewport:[innerWidth,innerHeight],imageSize:[im.naturalWidth,im.naturalHeight],header:read(q('header')),hero:read(q('.hero')),heading:read(q('.hero h1')),intro:read(q('.intro')),call:read(q('.hero-copy a[href^="tel:"]')),check:read(q('.hero-copy a[href="/check.html"]')),mask:getComputedStyle(q('.hero')).maskImage}}))); for(const y of [0,200,500,800,1100,1300,1500,1700,1900,2200,2600,3000,3400,3800]) {console.log('SCROLL',JSON.stringify(await p.evaluate(async y=>{document.documentElement.style.scrollBehavior='auto';scrollTo(0,y);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));let rect=e=>{let r=e.getBoundingClientRect(),s=getComputedStyle(e);return {top:r.top,bottom:r.bottom,opacity:s.opacity,transform:s.transform}};let hit=[200,400,600,780].map(y=>{let e=document.elementFromPoint(187,y);return e&&e.closest('section')?.className||e?.tagName});return {scroll:scrollY,hero:rect(document.querySelector('.hero')),services:rect(document.querySelector('#services')),about:rect(document.querySelector('#about')),hit}},y)));} await p.goto('https://brightmec.com/check.html',{waitUntil:'networkidle'});console.log('CHECK_FONT',await p.locator('body').evaluate(e=>getComputedStyle(e).fontFamily));await b.close();
+            for(const [name,url] of [['CANDIDATE','http://127.0.0.1:8000/'],['LIVE','https://brightmec.com/?verify=mobile-pass']]) {
+              const p=await b.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
+              await p.goto(url,{waitUntil:'networkidle'});
+              console.log(name,'INITIAL',JSON.stringify(await p.evaluate(()=>({viewport:[innerWidth,innerHeight],cardText:document.querySelector('#services li:last-child').textContent,video:document.querySelector('#about video source').getAttribute('src'),mask:getComputedStyle(document.querySelector('#services')).maskImage,servicePadding:getComputedStyle(document.querySelector('#services')).paddingBottom,spacer:document.querySelector('#about').previousElementSibling.offsetHeight,headingOpacity:getComputedStyle(document.querySelector('#services .section-head')).opacity,aboutPadding:getComputedStyle(document.querySelector('#about')).paddingTop}))));
+              for(let y=0;y<4500;y+=50) {
+                const r=await p.evaluate(async y=>{document.documentElement.style.scrollBehavior='auto';scrollTo(0,y);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const q=s=>document.querySelector(s),s=q('#services'),h=q('#services .section-head'),c=q('#services li:last-child'),a=q('#about'),head=q('header');const rect=e=>{const r=e.getBoundingClientRect();return [Math.round(r.top*100)/100,Math.round(r.bottom*100)/100]};let hr=h.getBoundingClientRect(),cr=c.getBoundingClientRect(),ar=a.getBoundingClientRect();let x=Math.min(innerWidth-2,Math.max(2,hr.left+10)),hy=Math.min(innerHeight-1,Math.max(0,(hr.top+hr.bottom)/2)),hit=document.elementFromPoint(x,hy);return {scroll:scrollY,header:rect(head),heading:rect(h),headOpacity:getComputedStyle(h).opacity,serviceOpacity:getComputedStyle(s).opacity,transform:getComputedStyle(s).transform,card:rect(c),about:rect(a),uncovered:!!hit&&h.contains(hit),gap:Math.round((ar.top-cr.bottom)*100)/100}},y);
+                if((r.heading[1]>100&&r.heading[0]<812)||(r.card[1]>100&&r.card[0]<812)||(r.about[0]>100&&r.about[0]<812)) console.log(name,'SAMPLE',JSON.stringify(r));
+              }
+              await p.close();
+            }
+            await b.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
-          python - <<'PY'
-          from PIL import Image
-          im=Image.open('/tmp/live.png').convert('RGB')
-          active=[]
-          for y in range(0,300):
-            n=sum(1 for x in range(30,345) if max(im.getpixel((x,y)))-min(im.getpixel((x,y)))<40 and max(im.getpixel((x,y)))>65)
-            if n>=3: active.append(y)
-          groups=[]
-          for y in active:
-            if not groups or y>groups[-1][-1]+1: groups.append([y])
-            else: groups[-1].append(y)
-          print('VISIBLE_ROW_GROUPS', [(g[0],g[-1]) for g in groups])
-          PY
