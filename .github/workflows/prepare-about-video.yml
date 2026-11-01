@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - name: Encode mobile video and poster
         run: |
           ffmpeg -y -i IMG-3541.mov -t 20 -map 0:v:0 -vf "scale=480:-2,fps=24" -an -c:v libx264 -preset slow -crf 31 -pix_fmt yuv420p -movflags +faststart about-background.mp4
