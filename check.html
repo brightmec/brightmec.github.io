@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1c1e">
+<title>Check Your System | Bright Mechanical</title>
+<style>
+:root{color-scheme:dark;--bg:#1c1c1e;--silver:#c8ccd0;--white:#f2f3f4;--border:#474b4e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--silver);font-family:Arial,Helvetica,sans-serif;line-height:1.65}
+header{background:#111;border-bottom:1px solid #343639;text-align:center;padding:22px 20px}
+.brand{color:var(--white);font-size:1rem;font-weight:800;letter-spacing:.11em;line-height:1.25}
+.brand span{display:block;color:var(--silver);font-size:.68rem;font-weight:400;letter-spacing:.12em;margin-top:5px}
+main{max-width:720px;margin:auto;padding:42px 22px 56px}
+.eyebrow{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#a8adb1}
+h1,h2{color:var(--white);line-height:1.2}h1{font-size:clamp(2rem,7vw,3rem);margin:8px 0 12px}h2{font-size:1.5rem;margin:8px 0 20px}
+p{margin:0 0 18px}.intro{max-width:540px}
+.card{background:#232426;border:1px solid var(--border);border-radius:3px;padding:clamp(20px,5vw,32px);margin-top:28px}
+.progress{font-size:.76rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#aeb4b9}.bar{height:3px;background:#414549;margin:10px 0 24px}.bar span{display:block;height:100%;background:#d8dce0;transition:width .2s}
+.options{display:grid;gap:10px}button{font:inherit;cursor:pointer}.option{width:100%;text-align:left;background:#303235;border:1px solid #555a5e;color:var(--white);border-radius:3px;padding:14px 16px;font-weight:700;line-height:1.3}.option:hover,.option:focus-visible{background:#414447;border-color:#d8dce0}
+.back,.restart{background:transparent;border:0;color:var(--silver);padding:12px 0 0;text-decoration:underline;font-size:.9rem}.button{display:inline-block;background:#d8dce0;color:#18191a;padding:15px 23px;text-decoration:none;font-weight:800;border:1px solid #d8dce0;border-radius:3px;letter-spacing:.02em;text-align:center}.button:hover,.button:focus{background:#fff}
+.result-line{border-top:1px solid var(--border);padding:15px 0;margin:0}.result-line strong{color:var(--white)}.selection{font-size:.9rem;color:#b2b7ba}.call{margin:18px 0 0}.call .button{width:100%}.small{font-size:.82rem;color:#aeb4b9;margin-top:22px}.safety{border-left:3px solid #858b90;padding-left:14px}.foot{text-align:center;font-size:.8rem;margin-top:32px;color:#a6abad}
+[hidden]{display:none!important}:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(min-width:520px){.options{grid-template-columns:repeat(2,minmax(0,1fr))}.call .button{width:auto}}
+</style>
+</head>
+<body>
+<header><div class="brand">BRIGHT MECHANICAL<span>HVAC &amp; MECHANICAL SERVICES</span></div></header>
+<main>
+<div class="eyebrow">A quick place to start</div>
+<h1>What's your system doing?</h1>
+<p class="intro">Answer three quick questions and we'll help you figure out what to check first.</p>
+<div class="card" id="picker">
+<div class="progress" id="progress">Step 1 of 3</div><div class="bar" aria-hidden="true"><span id="bar" style="width:33.33%"></span></div>
+<section id="step1" aria-labelledby="question1"><h2 id="question1" tabindex="-1">What's the system doing?</h2><div class="options">
+<button class="option" type="button" data-step="1" data-value="cooling">Not cooling</button>
+<button class="option" type="button" data-step="1" data-value="heating">Not heating</button>
+<button class="option" type="button" data-step="1" data-value="behind">Running but not keeping up</button>
+<button class="option" type="button" data-step="1" data-value="water">Leaking water</button>
+<button class="option" type="button" data-step="1" data-value="ice">Ice on the outside unit</button>
+<button class="option" type="button" data-step="1" data-value="noise">Weird noise</button>
+<button class="option" type="button" data-step="1" data-value="breaker">Tripping the breaker</button>
+</div></section>
+<section id="step2" aria-labelledby="question2" hidden><h2 id="question2" tabindex="-1">What kind of system?</h2><div class="options">
+<button class="option" type="button" data-step="2" data-value="central">Central AC + furnace</button>
+<button class="option" type="button" data-step="2" data-value="heatpump">Heat pump</button>
+<button class="option" type="button" data-step="2" data-value="mini">Mini-split</button>
+<button class="option" type="button" data-step="2" data-value="window">Window unit</button>
+</div><button class="back" type="button" data-back="1">← Back</button></section>
+<section id="step3" aria-labelledby="question3" hidden><h2 id="question3" tabindex="-1">Rough age?</h2><div class="options">
+<button class="option" type="button" data-step="3" data-value="under5">Under 5 years</button>
+<button class="option" type="button" data-step="3" data-value="5to10">5 to 10 years</button>
+<button class="option" type="button" data-step="3" data-value="10to15">10 to 15 years</button>
+<button class="option" type="button" data-step="3" data-value="15plus">15+ years</button>
+</div><button class="back" type="button" data-back="2">← Back</button></section>
+<section id="result" aria-labelledby="resultTitle" hidden><h2 id="resultTitle" tabindex="-1">Here's where to start.</h2><p class="selection" id="selection"></p>
+<p class="result-line"><strong>Check first:</strong> <span id="check"></span></p>
+<p class="result-line"><strong>Good to know:</strong> <span id="context"></span></p>
+<p class="result-line"><strong>Cost:</strong> <span id="cost"></span></p>
+<p class="result-line"><strong>Give us a call:</strong> <span id="callAdvice"></span></p>
+<div class="call"><a class="button" href="tel:+17432011231">Call (743) 201-1231</a></div>
+<button class="restart" type="button" id="restart">Start over</button></section>
+</div>
+<p class="small">This is a starting point, not a diagnosis. Don't open electrical panels or try a repair you're not comfortable with.</p>
+<p class="small safety">Smell gas? Leave immediately and call your gas utility or 911 from outside. For fire or smoke, get out and call 911.</p>
+<p class="foot">Bright Mechanical · Kernersville &amp; Winston-Salem, NC</p>
+<noscript><p>Please turn on JavaScript to use the picker, or call <a href="tel:+17432011231">(743) 201-1231</a>.</p></noscript>
+</main>
+<script>
+(function(){
+  const answers={};
+  const types={central:'Central AC + furnace',heatpump:'Heat pump',mini:'Mini-split',window:'Window unit'};
+  const ages={under5:'Under 5 years', '5to10':'5 to 10 years', '10to15':'10 to 15 years', '15plus':'15+ years'};
+  const advice={
+    cooling:{label:'Not cooling',check:'Make sure the thermostat is set to cool and below room temperature. Check for a dirty, safely accessible filter.',cost:'A dirty filter or thermostat setting can be a small fix; a failed part or refrigerant problem can cost more.',call:'If it still won’t cool after those checks, turn it off and call.'},
+    heating:{label:'Not heating',check:'Make sure the thermostat is set to heat and above room temperature. Check for a dirty, safely accessible filter.',cost:'A filter or thermostat setting can be a small fix; a failed heating part can cost more.',call:'If it still won’t heat, turn it off and call.'},
+    behind:{label:'Running but not keeping up',check:'Check the thermostat setting and look for a dirty, safely accessible filter. Make sure supply vents aren’t blocked.',cost:'A dirty filter or blocked vent can be a small fix; a failing part or refrigerant problem can cost more.',call:'If it still can’t keep up, call for a proper check.'},
+    water:{label:'Leaking water',check:'Turn the system off. Keep away from water near electrical equipment; don’t touch wet electrical parts.',cost:'A clogged drain can be a smaller fix, but a damaged part or water damage may cost more.',call:'Call if the leak continues, is near electrical equipment, or you can’t safely find the source.'},
+    ice:{label:'Ice on the outside unit',check:'If the unit is covered in thick ice, turn the system off. Don’t chip the ice or pour hot water on it.',cost:'An airflow issue can be a smaller fix; a faulty part or refrigerant issue can cost more.',call:'Call if ice is thick, keeps coming back, or the system isn’t working properly.'},
+    noise:{label:'Weird noise',check:'Turn the system off if the sound is loud, new, or like grinding, banging, or squealing. Don’t reach inside.',cost:'A loose part may be a smaller fix; a damaged motor or compressor can cost more.',call:'Call if the noise is new, loud, or keeps coming back.'},
+    breaker:{label:'Tripping the breaker',check:'Turn the system off at the thermostat or controls. Leave the tripped breaker off; don’t keep resetting it.',cost:'It could be a smaller electrical issue or a bigger component failure; it needs a check to know.',call:'Call before trying to run it again. If there’s fire or smoke, get out and call 911.'}
+  };
+  function show(step){
+    ['step1','step2','step3','result'].forEach(function(id){document.getElementById(id).hidden=true;});
+    const result=step===4, section=document.getElementById(result?'result':'step'+step); section.hidden=false;
+    document.getElementById('progress').textContent=result?'Your starting point':'Step '+step+' of 3';
+    document.getElementById('bar').style.width=(result?100:step*100/3)+'%';
+    document.getElementById(result?'resultTitle':'question'+step).focus();
+  }
+  function makeResult(){
+    const a=advice[answers[1]], type=answers[2], age=answers[3];
+    document.getElementById('selection').textContent=a.label+' · '+types[type]+' · '+ages[age];
+    document.getElementById('check').textContent=a.check;
+    let context;
+    if(answers[1]==='ice' && type==='heatpump') context='A little frost on a heat pump outside in winter can be normal; thick, solid ice is not.';
+    else if(answers[1]==='ice' && type==='window') context='Window units can ice up too. Turn it off if it’s heavily iced and let a technician check it.';
+    else if(type==='mini') context='Your mini-split may have a washable indoor filter; check the owner’s instructions before cleaning it.';
+    else if(type==='window') context='Your window unit may have an accessible filter; check the owner’s instructions before cleaning it.';
+    else if(type==='heatpump') context='A heat pump handles both heating and cooling, so the same equipment may be involved either way.';
+    else context='Your central AC and furnace share parts of the indoor airflow system.';
+    document.getElementById('context').textContent=context;
+    let ageNote=age==='under5'?' If it’s under warranty, check your paperwork.':age==='15plus'?' On an older system, repair-versus-replacement is worth discussing.':'';
+    document.getElementById('cost').textContent=a.cost+ageNote+' No way to know for sure without checking it.';
+    document.getElementById('callAdvice').textContent=a.call;
+    show(4);
+  }
+  document.getElementById('picker').addEventListener('click',function(e){
+    const button=e.target.closest('button'); if(!button)return;
+    if(button.dataset.step){const step=Number(button.dataset.step);answers[step]=button.dataset.value; if(step<3)show(step+1);else makeResult();}
+    else if(button.dataset.back)show(Number(button.dataset.back));
+    else if(button.id==='restart'){delete answers[1];delete answers[2];delete answers[3];show(1);}
+  });
+})();
+</script>
+</body>
+</html>
