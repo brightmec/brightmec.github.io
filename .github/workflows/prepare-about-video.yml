@@ -1,25 +1,28 @@
-name: Prepare About video assets
+name: Remove original video from history
 on:
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
-  encode:
+  scrub:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install ffmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
-      - name: Encode mobile video and poster without metadata
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Install history filter and ffprobe
         run: |
-          ffmpeg -loglevel error -y -i IMG-3541.mov -t 20 -map 0:v:0 -map_metadata -1 -vf "scale=480:-2,fps=24" -an -c:v libx264 -preset slow -crf 31 -pix_fmt yuv420p -movflags +faststart about-background.mp4
-          ffmpeg -loglevel error -y -i IMG-3541.mov -map_metadata -1 -frames:v 1 -vf "scale=480:-2" -q:v 6 about-poster.jpg
+          python -m pip install --user git-filter-repo
+          sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Rewrite main without the original video
+        run: |
+          python -m git_filter_repo --force --path IMG-3541.mov --invert-paths
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          test -z "$(git log --all --format=%H -- IMG-3541.mov)"
+          echo "Filtered main: $(git rev-parse HEAD)"
+          git push --force origin HEAD:refs/heads/main
+      - name: Verify compressed video metadata
+        run: |
+          ffprobe -v error -show_entries format_tags:stream_tags -of json about-background.mp4
           ls -lh about-background.mp4 about-poster.jpg
-      - name: Commit optimized assets and remove source
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git rm IMG-3541.mov
-          git add about-background.mp4 about-poster.jpg
-          git commit -m 'Strip video metadata and remove original source'
-          git push origin HEAD:main
