@@ -14,7 +14,7 @@ main.fold-ready > #services{z-index:2}
 main > #about{position:relative;z-index:3;background:var(--bg);overflow:hidden}#about .about-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}#about::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.78);z-index:1;pointer-events:none}#about > .about-layout{position:relative;z-index:2}
 main > #contact{position:relative;z-index:4}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-.hero-copy .button[href="/check.html"]{background-image:linear-gradient(rgba(216,220,224,.84),rgba(216,220,224,.84)),linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),url('/4a62a846-54c8-4f30-adc3-74c794758d0d.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat}.hero-copy .button[href="/check.html"]:hover,.hero-copy .button[href="/check.html"]:focus{background-image:none}</style>
+.hero-copy .button[href="/check.html"]{background-image:linear-gradient(rgba(216,220,224,.70),rgba(216,220,224,.70)),linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),url('4a62a846-54c8-4f30-adc3-74c794758d0d.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat}.hero-copy .button[href="/check.html"]:hover,.hero-copy .button[href="/check.html"]:focus{background-image:none}</style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const main = document.querySelector('main'), header = document.querySelector('header');
@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
       // A tall section scrolls until its bottom fits before it begins to stick.
       const stickyTop = Math.min(clearance, viewport - section.offsetHeight);
       section.style.setProperty('--fold-top', stickyTop + 'px');
-      const start = Math.max(positions[index] + anchors[index].offsetHeight - stickyTop, positions[index + 1] - viewport + 64);
-      const end = positions[index + 1] - clearance;
+      const start = Math.max(positions[index] + anchors[index].offsetHeight - stickyTop, (positions[index + 1] + anchors[index + 1].offsetHeight) - viewport + 64);
+      const end = (positions[index + 1] + anchors[index + 1].offsetHeight) - clearance;
       const delay = mobile.matches && index === 1 ? Math.min(24, Math.max(0, (end - start) * .2)) : 0; const progress = clamp((scroll - start - delay) / (Math.max(1, end - start - delay) * (mobile.matches ? 1.2 : 1)));
       section.style.transform = 'perspective(1200px) rotateX(' + (-(mobile.matches ? 55 * ease(progress) : 70 * progress)) + 'deg)';
       const fade = clamp((progress - .75) / .25); section.style.opacity = 1 - (mobile.matches ? ease(fade) : fade);
