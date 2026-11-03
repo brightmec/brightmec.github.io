@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // A tall section scrolls until its bottom fits before it begins to stick.
       const stickyTop = Math.min(clearance, viewport - section.offsetHeight - (mobile.matches && index === 1 ? document.querySelector('.mobile-contact-bar').offsetHeight + 16 : 0));
       section.style.setProperty('--fold-top', stickyTop + 'px');
-      const start = Math.max(positions[index] + anchors[index].offsetHeight - stickyTop, (positions[index + 1] + anchors[index + 1].offsetHeight) - viewport + 64);
+      const start = mobile.matches && index === 1 ? positions[index] + anchors[index].offsetHeight - stickyTop + Math.ceil(viewport * .2) : Math.max(positions[index] + anchors[index].offsetHeight - stickyTop, (positions[index + 1] + anchors[index + 1].offsetHeight) - viewport + 64);
       const end = (positions[index + 1] + anchors[index + 1].offsetHeight) - clearance;
       const delay = mobile.matches && index === 1 ? Math.min(24, Math.max(0, (end - start) * .2)) : 0; const progress = clamp((scroll - start - delay) / (Math.max(1, end - start - delay) * 1));
       section.style.transform = 'perspective(1200px) rotateX(' + (-(mobile.matches ? 55 * ease(progress) : 70 * progress)) + 'deg)';
